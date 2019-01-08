@@ -1,0 +1,68 @@
+<div class="tt-cart" ng-app='cartModule'>
+  <div class="tt-cart__main js-cart" ng-controller='cartComponent'>
+    <form ng-class="{'active': cart.item_count > 0, 'tt-cart__form': true, 'js-main-view': true}" action="/cart" method="post" novalidate>
+      <div class="tt-cart__line-items">
+        <article class="tt-line-item tt-cart__line-item" ng-repeat='item in cart.items'>
+          <div class="tt-line-item__aside">
+            <a class="tt-line-item__image" ng-href="{[{item.url}]}">
+              <img ng-src="{[{item.image}]}" alt="{[{item.title}]}" />
+            </a>
+          </div>
+          <div class="tt-line-item__main">
+            <div class="tt-line-item__row tt-line-item__top-row">
+              <div class="tt-line-item__block tt-line-item__block--title">
+                <a ng-href="{[{item.url}]}">
+                  <span class="tt-text-3-bold">{[{item.title}]}</span>
+                </a>
+              </div>
+              <div class="tt-line-item__block tt-line-item__block--remove-button">
+                <button type="button" class="tt-line-item__button tt-button__close" ng-click="removeItemHandler(item.id)"></button>
+              </div>
+            </div>
+            <div class="tt-line-item__row" ng-show="item.total_discount > 0">
+              <div class="tt-line-item__block tt-line-item__block-options" ng-repeat="discounts in item.discounts">
+                <span class="tt-text-3">{[{ discount.title }]&nbsp;</span>
+                <span class="tt-text-3">{[{ discount.amount | formatMoney }]}</span>
+              </div>
+            </div>
+            <div class="tt-line-item__row tt-line-item__bottom-row">
+              <div class="tt-line-item__block tt-line-item__block-1">
+              <div class="tt-number-picker">
+                <button ng-click="decreaseQuantityHandler(item.id)" type="button" class="tt-number-picker__button"></button>
+                <input class="tt-number-picker__input" type="number" ng-model="item.quantity" min="1" max="100">
+                <button ng-click="increaseQuantityHandler(item.id)" type="button" class="tt-number-picker__button"></button>
+              </div>
+              </div>
+              <div class="tt-line-item__block tt-line-item__block-2">
+                <span
+                  ng-show="item.total_discount > 0"
+                  class="tt-text-3 js-original-line-price tt-line-item__original-price">
+                  {[{item.discountPrice | formatMoney}]}
+                </span><br />
+                <span class="tt-text-3 js-line-price" ng-bind="item.line_price | formatMoney"></span>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+      <div >
+      </div>
+      <div class="tt-cart__summary">
+        <div class="tt-cart__subtotal">
+          <div class="tt-cart__subtotal-row">
+            <span class="tt-text-3-bold">Subtotal</span>
+            <span class="tt-text-3-bold js-cart-subtotal" ng-bind="cart.total_price | formatMoney"></span>
+          </div>
+        </div>
+        <div class="tt-cart__checkout">
+          <input type="submit" name="checkout" class="tt-cart__submit-button tt-button__primary" value="Checkout">
+        </div>
+      </div>
+    </form>
+
+    <div ng-class="{ 'active': cart.item_count <= 0, 'tt-cart__empty': true, 'js-empty-view': true}">
+      <span class="tt-title-3">Cart is Empty</span>
+    </div>
+  </div>
+
+</div>
